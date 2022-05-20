@@ -1,6 +1,8 @@
 const Usuario = require("../models/usuario");
 const Producto = require("../models/Producto");
 const Cliente = require("../models/Cliente");
+const Pedido = require("../models/Pedido");
+
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "variables.env" });
@@ -76,7 +78,7 @@ const resolvers = {
 
       // Revisar si el usuario ya está registrado
       const existeUsuario = await Usuario.findOne({ email });
-      console.log(existeUsuario);
+      //console.log(existeUsuario);
       if (existeUsuario) {
         throw new Error("El usuario ya está registrado");
       }
@@ -168,7 +170,7 @@ const resolvers = {
     },
     nuevoCliente: async (_, { input }, ctx) => {
       // Verificar si el cliente ya está registrado
-      console.log(ctx);
+      //console.log(ctx);
       const { telefono } = input;
       const cliente = await Cliente.findOne({ telefono });
       if (cliente) {
@@ -224,6 +226,46 @@ const resolvers = {
       // Eliminar el cliente
       await Cliente.findOneAndDelete({ _id: id });
       return "Cliente eliminado";
+    },
+    nuevoPedido: async (_, { input }, ctx) => {
+      const { cliente } = input;
+      // Verificar si el cliente ya está registrado
+      let clienteExiste = await Cliente.findById(cliente);
+      if (!clienteExiste) {
+        throw new Error("El cliente no existe");
+      }
+
+      // Verificar si el cliente es del vendedor
+      if (clienteExiste.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error("No tienes las credenciales");
+      }
+
+      // Revisar que el stock este disponible
+      for await (const articulo of input.pedido) {
+        const { id } = articulo;
+
+        const producto = await Producto.findById(id);
+
+        if (articulo.cantidad > producto.existencia) {
+          throw new Error(
+            `El articulo ${producto.nombre} exede la cantidad disponible`
+          );
+        } else {
+          // Restar la cantidad a lo disponible
+          producto.existencia = producto.existencia - articulo.cantidad;
+          await producto.save();
+        }
+      }
+
+      // Crear un nuevo pedido
+      const nuevoPedido = new Pedido(input);
+
+      // Asignarle un vendedor
+      nuevoPedido.vendedor = ctx.usuario.id;
+
+      // Guardar el pedido en la base de datos
+      const resultado = await nuevoPedido.save();
+      return resultado;
     },
   },
 };

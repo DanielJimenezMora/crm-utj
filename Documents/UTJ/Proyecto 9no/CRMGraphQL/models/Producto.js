@@ -8,7 +8,6 @@ const ProductosSchema = mongoose.Schema({
   },
   presentacion: {
     type: "string",
-    required: true,
     trim: true,
   },
   existencia: {
