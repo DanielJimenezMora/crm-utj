@@ -127,9 +127,13 @@ const Login = () => {
             <Btn type="submit" value="Iniciar sesión">
               Ingresar
             </Btn>
-            <p>
-              ¿No tienes cuenta? <Span>Registrarse</Span>
-            </p>
+            <Link href="/nuevacuenta">
+              <a>
+                <p>
+                  ¿No tienes cuenta? <Span>Registrarse</Span>
+                </p>
+              </a>
+            </Link>
           </InputsContainer>
         </LoginInfoContainer>
       </LoginContainer>

@@ -145,9 +145,13 @@ const NuevaCuenta = () => {
             <Btn type="submit" value="Iniciar sesión">
               Crear cuenta
             </Btn>
-            <p>
-              Ya tienes cuenta? <Span>Iniciar sesión</Span>
-            </p>
+            <Link href="/login">
+              <a>
+                <p>
+                  Ya tienes cuenta? <Span>Iniciar sesión</Span>
+                </p>
+              </a>
+            </Link>
           </InputsContainer>
         </LoginInfoContainer>
       </LoginContainer>
