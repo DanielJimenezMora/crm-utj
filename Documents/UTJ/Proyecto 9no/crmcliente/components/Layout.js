@@ -1,8 +1,17 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
+import styled from "@emotion/styled";
 import Sidebar from "./Sidebar";
+import { useRouter } from "next/router";
 
 const Layout = ({ children }) => {
+  // Hook de Routing
+  const router = useRouter();
+
+  const Bgb = styled.div`
+    background-image: linear-gradient(to top, #96e4de 0%, #fff 100%);
+  `;
+
   return (
     <Fragment>
       <Head>
@@ -17,12 +26,21 @@ const Layout = ({ children }) => {
         <meta name="theme-color" content="rgb(22 78 99)" />
         <script src="https://cdn.tailwindcss.com"></script>
       </Head>
-      <div className="bg-gray-50 min-h-screen">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          {children}
+
+      {router.pathname === "/login" || router.pathname === "/nuevacuenta" ? (
+        <Bgb className="bg-gray-800 min-h-screen flex flex-col justify-center">
+          <div>{children}</div>
+        </Bgb>
+      ) : (
+        <div className="bg-gray-50 min-h-screen">
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="sm:w-2/4 xl:w:-4/5 sm:min-h-screen p-5">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
+      )}
     </Fragment>
   );
 };
