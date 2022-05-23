@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 
+/* GraphQL */
+const AUTENTICAR_USUARIO = gql`
+  mutation autenticarUsuario($input: AutenticarInput) {
+    autenticarUsuario(input: $input) {
+      token
+    }
+  }
+`;
+
+/* Estilos */
 const LoginContainer = styled.div`
   height: 34.3em;
   width: 60em;
@@ -100,7 +113,84 @@ const Span = styled.span`
   cursor: pointer;
 `;
 
+const Error = styled.div`
+  width: 90%;
+  text-align: left;
+  padding: 8px;
+`;
+
+const Error2 = styled.div`
+  width: 90%;
+  padding: 8px;
+`;
+
 const Login = () => {
+  //Routing
+  const router = useRouter();
+
+  const [mensaje, guardarMensaje] = useState(null);
+
+  // Mutations para crear nuevos usuarios en apollo
+  const [autenticarUsuario] = useMutation(AUTENTICAR_USUARIO);
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("El email no es valido")
+        .required("El email no puede ir vacío"),
+      password: Yup.string().required("El password es obligatoro"),
+    }),
+    onSubmit: async (valores) => {
+      const { email, password } = valores;
+
+      try {
+        const { data } = await autenticarUsuario({
+          variables: {
+            input: {
+              email,
+              password,
+            },
+          },
+        });
+        console.log(data);
+        guardarMensaje("Autenticando...");
+
+        // Guardar el token en localstorage
+        const { token } = data.autenticarUsuario;
+        localStorage.setItem("token", token);
+
+        //Redireccionar a clientes
+
+        setTimeout(() => {
+          guardarMensaje(null);
+          router.push("/");
+        }, 1000);
+      } catch (error) {
+        guardarMensaje(error.message.replace("GraphQL error: ", ""));
+
+        setTimeout(() => {
+          guardarMensaje(null);
+        }, 3000);
+      }
+    },
+  });
+
+  const mostrarMensaje = () => {
+    return mensaje === "Autenticando..." ? (
+      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-green-100 border-l-4 border-green-500 text-green-700">
+        <p>{mensaje}</p>
+      </Error2>
+    ) : (
+      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
+        <p>{mensaje}</p>
+      </Error2>
+    );
+  };
+
   return (
     <Layout>
       <LoginContainer>
@@ -109,24 +199,47 @@ const Login = () => {
         </ImageContainer>
         <LoginInfoContainer>
           <Title>Iniciar sesión</Title>
-          <InputsContainer>
+          <InputsContainer onSubmit={formik.handleSubmit}>
             <Label htmlFor="nombre">Usuario</Label>
             <Input
               className="focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               placeholder="Correo:"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                <p>
+                  <span className="font-bold">Error: </span>
+                  {formik.errors.email}
+                </p>
+              </Error>
+            ) : null}
             <Label htmlFor="password">Password</Label>
             <Input
               className="focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="Contraseña"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
             />
+            {formik.touched.password && formik.errors.password ? (
+              <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                <p>
+                  <span className="font-bold">Error: </span>
+                  {formik.errors.password}
+                </p>
+              </Error>
+            ) : null}
             <Btn type="submit" value="Iniciar sesión">
               Ingresar
             </Btn>
+            {mensaje && mostrarMensaje()}
             <Link href="/nuevacuenta">
               <a>
                 <p>

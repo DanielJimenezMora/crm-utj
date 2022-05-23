@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import styled from "@emotion/styled";
 import Image from "next/image";
@@ -108,6 +109,11 @@ const Error = styled.div`
   text-align: left;
   padding: 8px;
 `;
+
+const Error2 = styled.div`
+  width: 90%;
+  padding: 8px;
+`;
 /* Fin de estilos */
 
 /* Mutation */
@@ -123,8 +129,14 @@ const NUEVA_CUENTA = gql`
 `;
 
 const NuevaCuenta = () => {
+  //State para el mensaje
+  const [mensaje, guardarMensaje] = useState(null);
+
   // Mutation para crear nuevos usuarios
   const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
+
+  // Router para redireccionar
+  const router = useRouter();
 
   // Validación del formulario
   const formik = useFormik({
@@ -158,13 +170,33 @@ const NuevaCuenta = () => {
           },
         });
         // Usuario creado correctamente
+        guardarMensaje("Se creó correctamente el Usuario");
+        setTimeout(() => {
+          guardarMensaje(null);
+          router.push("/login");
+        }, 3000);
 
         //Redirigir al usuario para iniciar sesión
       } catch (error) {
-        console.log(error);
+        guardarMensaje(error.message.replace("GraphQL error: ", ""));
+        setTimeout(() => {
+          guardarMensaje(null);
+        }, 3000);
       }
     },
   });
+
+  const mostrarMensaje = () => {
+    return mensaje === "Se creó correctamente el Usuario" ? (
+      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-green-100 border-l-4 border-green-500 text-green-700">
+        <p>{mensaje}</p>
+      </Error2>
+    ) : (
+      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
+        <p>{mensaje}</p>
+      </Error2>
+    );
+  };
 
   return (
     <Layout>
@@ -251,7 +283,7 @@ const NuevaCuenta = () => {
               </Error>
             ) : null}
             <Btn type="submit" value="Crear cuenta" />
-
+            {mensaje && mostrarMensaje()}
             <Link href="/login">
               <a>
                 <p>
