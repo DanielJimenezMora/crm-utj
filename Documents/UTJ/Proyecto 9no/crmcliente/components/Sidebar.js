@@ -15,6 +15,17 @@ const Title = styled.p`
   padding-left: 1rem;
 `;
 
+const Item = styled.div`
+  display: grid;
+  grid-template-columns: 10% 90%;
+  padding-left: 1rem;
+  cursor: pointer;
+`;
+
+const ItemText = styled.a`
+  padding-left: 1rem;
+`;
+
 const Sidebar = () => {
   // Routing de Next.js
   const router = useRouter();
@@ -41,14 +52,24 @@ const Sidebar = () => {
       <nav className="mt-5 list-none">
         <li className={router.pathname === "/" ? "bg-cyan-900 p-3" : "p-3"}>
           <Link href="/">
-            <a className="text-white block">Clientes</a>
+            <Item>
+              <div>
+                <Image width={26} height={22} src="/img/icon/cliente.png" />
+              </div>
+              <ItemText className="text-white block">Clientes</ItemText>
+            </Item>
           </Link>
         </li>
         <li
           className={router.pathname === "/pedidos" ? "bg-cyan-900 p-3" : "p-3"}
         >
           <Link href="/pedidos">
-            <a className="text-white block">Pedidos</a>
+            <Item>
+              <div>
+                <Image width={20} height={28} src="/img/icon/pedido.png" />
+              </div>
+              <ItemText className="text-white block">Pedidos</ItemText>
+            </Item>
           </Link>
         </li>
         <li
@@ -57,7 +78,12 @@ const Sidebar = () => {
           }
         >
           <Link href="/productos">
-            <a className="text-white block">Productos</a>
+            <Item>
+              <div>
+                <Image width={26} height={22} src="/img/icon/carrito.png" />
+              </div>
+              <ItemText className="text-white block">Productos</ItemText>
+            </Item>
           </Link>
         </li>
       </nav>
