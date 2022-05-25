@@ -8,10 +8,6 @@ const Layout = ({ children }) => {
   // Hook de Routing
   const router = useRouter();
 
-  const Bgb = styled.div`
-    background-image: linear-gradient(to top, #96e4de 0%, #fff 100%);
-  `;
-
   return (
     <Fragment>
       <Head>
@@ -28,9 +24,9 @@ const Layout = ({ children }) => {
       </Head>
 
       {router.pathname === "/login" || router.pathname === "/nuevacuenta" ? (
-        <Bgb className="bg-gray-800 min-h-screen flex flex-col justify-center">
+        <div className="">
           <div>{children}</div>
-        </Bgb>
+        </div>
       ) : (
         <div className="bg-gray-50 min-h-screen">
           <div className="flex min-h-screen">

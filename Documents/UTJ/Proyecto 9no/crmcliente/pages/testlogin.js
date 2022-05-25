@@ -1,21 +1,28 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useMutation, gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
+
+/* GraphQL */
+const AUTENTICAR_USUARIO = gql`
+  mutation autenticarUsuario($input: AutenticarInput) {
+    autenticarUsuario(input: $input) {
+      token
+    }
+  }
+`;
 
 /* Estilos */
-/* Estilo para el background */
+
 const Bgb = styled.div`
   background-image: linear-gradient(to top, #96e4de 0%, #fff 100%);
   height: 100vh;
 `;
-
-/* Estilo para Contenedor principal */
 const LoginContainer = styled.div`
   height: 34.3em;
   width: 60em;
@@ -31,7 +38,6 @@ const LoginContainer = styled.div`
   }
 `;
 
-/* Estilo para  Contenedor de los datos */
 const LoginInfoContainer = styled.div`
   width: 50%;
   display: flex;
@@ -46,7 +52,6 @@ const LoginInfoContainer = styled.div`
   }
 `;
 
-/* Estilos para Contenedor de la imagen */
 const ImageContainer = styled.div`
   width: 50%;
   background-color: #fff;
@@ -56,20 +61,18 @@ const ImageContainer = styled.div`
   }
 `;
 
-/* Estilo para Titulo del login */
 const Title = styled.h1`
   text-transform: capitalize;
   font-size: 2.25rem;
   font-weight: 300;
   letter-spacing: 1px;
   color: #108598;
-  padding-top: 3rem;
-  padding-bottom: 1rem;
+  padding-top: 5rem;
+  padding-bottom: 2rem;
 `;
 
-/* Estilo para el contenedor de los inputs */
 const InputsContainer = styled.form`
-  height: 70%;
+  height: 55%;
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -77,7 +80,6 @@ const InputsContainer = styled.form`
   align-items: center;
 `;
 
-/* Estilo de inputs */
 const Input = styled.input`
   width: 90%;
   height: 3.125rem;
@@ -92,14 +94,11 @@ const Input = styled.input`
     border: 2px solid #108598;
   }
 `;
-
-/* Estilo para que no se muestre un label */
 const Label = styled.label`
   display: none;
 `;
 
-/* Estilo del boton */
-const Btn = styled.input`
+const Btn = styled.button`
   width: 90%;
   height: 3.125rem;
   font-size: 1em;
@@ -113,90 +112,71 @@ const Btn = styled.input`
   }
 `;
 
-/* Estilo para el span */
 const Span = styled.span`
   color: #108598;
   font-weight: 400px;
   cursor: pointer;
 `;
 
-/* Estilo para mostrar error en la validación */
 const Error = styled.div`
   width: 90%;
   text-align: left;
   padding: 8px;
 `;
 
-/* Estilo para mostrar error en la autenticación */
 const Error2 = styled.div`
   width: 90%;
   padding: 8px;
 `;
-/* Fin de estilos */
 
-/* Mutation */
-const NUEVA_CUENTA = gql`
-  mutation nuevoUsuario($input: UsuarioInput) {
-    nuevoUsuario(input: $input) {
-      id
-      nombre
-      apellido
-      email
-    }
-  }
-`;
-
-const NuevaCuenta = () => {
-  //State para el mensaje
-  const [mensaje, guardarMensaje] = useState(null);
-
-  // Mutation para crear nuevos usuarios
-  const [nuevoUsuario] = useMutation(NUEVA_CUENTA);
-
-  // Router para redireccionar
+const Login = () => {
+  //Routing
   const router = useRouter();
 
-  // Validación del formulario
+  const [mensaje, guardarMensaje] = useState(null);
+
+  // Mutations para crear nuevos usuarios en apollo
+  const [autenticarUsuario] = useMutation(AUTENTICAR_USUARIO);
+
   const formik = useFormik({
     initialValues: {
-      nombre: "",
-      apellido: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
-      nombre: Yup.string().required("El nombre es obligatoro"),
-      apellido: Yup.string().required("El apellido es obligatorio"),
       email: Yup.string()
-        .email("El email no es válido")
-        .required("El email es obligatorio"),
-      password: Yup.string()
-        .required("La contraseña es obligatoria")
-        .min(6, "La contraseña debe tener al menos 6 caracteres"),
+        .email("El email no es valido")
+        .required("El email no puede ir vacío"),
+      password: Yup.string().required("El password es obligatoro"),
     }),
     onSubmit: async (valores) => {
-      const { nombre, apellido, email, password } = valores;
+      const { email, password } = valores;
+
       try {
-        const { data } = await nuevoUsuario({
+        const { data } = await autenticarUsuario({
           variables: {
             input: {
-              nombre,
-              apellido,
               email,
               password,
             },
           },
         });
-        // Usuario creado correctamente
-        guardarMensaje("Se creó correctamente el Usuario");
+        console.log(data);
+        guardarMensaje("Autenticando...");
+
+        // Guardar el token en localstorage
+        const { token } = data.autenticarUsuario;
+        localStorage.setItem("token", token);
+
+        //Redireccionar a clientes
+
         setTimeout(() => {
           guardarMensaje(null);
-          router.push("/login");
-        }, 3000);
-
-        //Redirigir al usuario para iniciar sesión
+          router.push("/");
+        }, 1000);
       } catch (error) {
         guardarMensaje(error.message.replace("GraphQL error: ", ""));
+
         setTimeout(() => {
           guardarMensaje(null);
         }, 3000);
@@ -205,7 +185,7 @@ const NuevaCuenta = () => {
   });
 
   const mostrarMensaje = () => {
-    return mensaje === "Se creó correctamente el Usuario" ? (
+    return mensaje === "Autenticando..." ? (
       <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-green-100 border-l-4 border-green-500 text-green-700">
         <p>{mensaje}</p>
       </Error2>
@@ -224,56 +204,17 @@ const NuevaCuenta = () => {
             <Image width={457} height={551} src="/img/lobo.png" />
           </ImageContainer>
           <LoginInfoContainer>
-            <Title>Crear Nueva Cuenta</Title>
-            {/* Form */}
+            <Title>Iniciar sesión</Title>
             <InputsContainer onSubmit={formik.handleSubmit}>
-              {/* Campo Nombre */}
-              <Label htmlFor="nombre">Nombre</Label>
-              <Input
-                className="focus:outline-none focus:shadow-outline"
-                id="nombre"
-                type="text"
-                placeholder="Nombre Usuario"
-                value={formik.values.nombre}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.nombre && formik.errors.nombre ? (
-                <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p>
-                    <span className="font-bold">Error: </span>
-                    {formik.errors.nombre}
-                  </p>
-                </Error>
-              ) : null}
-
-              {/* Campo Apellido */}
-              <Label htmlFor="nombre">Apellido</Label>
-              <Input
-                className="focus:outline-none focus:shadow-outline"
-                id="apellido"
-                type="text"
-                placeholder="Apellido Usuario"
-                value={formik.values.apellido}
-                onChange={formik.handleChange}
-              />
-              {formik.touched.apellido && formik.errors.apellido ? (
-                <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                  <p>
-                    <span className="font-bold">Error: </span>
-                    {formik.errors.apellido}
-                  </p>
-                </Error>
-              ) : null}
-              {/* Campo Email */}
-              <Label htmlFor="nombre">Correo</Label>
+              <Label htmlFor="nombre">Usuario</Label>
               <Input
                 className="focus:outline-none focus:shadow-outline"
                 id="email"
                 type="email"
-                placeholder="Correo"
-                value={formik.values.email}
+                placeholder="Correo:"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
               />
               {formik.touched.email && formik.errors.email ? (
                 <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
@@ -283,15 +224,15 @@ const NuevaCuenta = () => {
                   </p>
                 </Error>
               ) : null}
-              {/* Campo Password */}
               <Label htmlFor="password">Password</Label>
               <Input
                 className="focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
                 placeholder="Contraseña"
-                value={formik.values.password}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
               />
               {formik.touched.password && formik.errors.password ? (
                 <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
@@ -301,12 +242,14 @@ const NuevaCuenta = () => {
                   </p>
                 </Error>
               ) : null}
-              <Btn type="submit" value="Crear cuenta" />
+              <Btn type="submit" value="Iniciar sesión">
+                Ingresar
+              </Btn>
               {mensaje && mostrarMensaje()}
-              <Link href="/login">
+              <Link href="/nuevacuenta">
                 <a>
                   <p>
-                    Ya tienes cuenta? <Span>Iniciar sesión</Span>
+                    ¿No tienes cuenta? <Span>Registrarse</Span>
                   </p>
                 </a>
               </Link>
@@ -318,4 +261,4 @@ const NuevaCuenta = () => {
   );
 };
 
-export default NuevaCuenta;
+export default Login;

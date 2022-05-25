@@ -17,7 +17,11 @@ const AUTENTICAR_USUARIO = gql`
   }
 `;
 
-/* Estilos */
+const Bgb = styled.div`
+  background-image: linear-gradient(to top, #96e4de 0%, #fff 100%);
+  height: 100vh;
+`;
+
 const LoginContainer = styled.div`
   height: 34.3em;
   width: 60em;
@@ -193,63 +197,65 @@ const Login = () => {
 
   return (
     <Layout>
-      <LoginContainer>
-        <ImageContainer>
-          <Image width={457} height={551} src="/img/lobo.png" />
-        </ImageContainer>
-        <LoginInfoContainer>
-          <Title>Iniciar sesión</Title>
-          <InputsContainer onSubmit={formik.handleSubmit}>
-            <Label htmlFor="nombre">Usuario</Label>
-            <Input
-              className="focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              placeholder="Correo:"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                <p>
-                  <span className="font-bold">Error: </span>
-                  {formik.errors.email}
-                </p>
-              </Error>
-            ) : null}
-            <Label htmlFor="password">Password</Label>
-            <Input
-              className="focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              placeholder="Contraseña"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                <p>
-                  <span className="font-bold">Error: </span>
-                  {formik.errors.password}
-                </p>
-              </Error>
-            ) : null}
-            <Btn type="submit" value="Iniciar sesión">
-              Ingresar
-            </Btn>
-            {mensaje && mostrarMensaje()}
-            <Link href="/nuevacuenta">
-              <a>
-                <p>
-                  ¿No tienes cuenta? <Span>Registrarse</Span>
-                </p>
-              </a>
-            </Link>
-          </InputsContainer>
-        </LoginInfoContainer>
-      </LoginContainer>
+      <Bgb>
+        <LoginContainer>
+          <ImageContainer>
+            <Image width={457} height={551} src="/img/lobo.png" />
+          </ImageContainer>
+          <LoginInfoContainer>
+            <Title>Iniciar sesión</Title>
+            <InputsContainer onSubmit={formik.handleSubmit}>
+              <Label htmlFor="nombre">Usuario</Label>
+              <Input
+                className="focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                placeholder="Correo:"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                  <p>
+                    <span className="font-bold">Error: </span>
+                    {formik.errors.email}
+                  </p>
+                </Error>
+              ) : null}
+              <Label htmlFor="password">Password</Label>
+              <Input
+                className="focus:outline-none focus:shadow-outline"
+                id="password"
+                type="password"
+                placeholder="Contraseña"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                  <p>
+                    <span className="font-bold">Error: </span>
+                    {formik.errors.password}
+                  </p>
+                </Error>
+              ) : null}
+              <Btn type="submit" value="Iniciar sesión">
+                Ingresar
+              </Btn>
+              {mensaje && mostrarMensaje()}
+              <Link href="/nuevacuenta">
+                <a>
+                  <p>
+                    ¿No tienes cuenta? <Span>Registrarse</Span>
+                  </p>
+                </a>
+              </Link>
+            </InputsContainer>
+          </LoginInfoContainer>
+        </LoginContainer>
+      </Bgb>
     </Layout>
   );
 };
