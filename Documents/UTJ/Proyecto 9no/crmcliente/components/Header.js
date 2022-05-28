@@ -17,7 +17,7 @@ const OBTENER_USUARIO = gql`
 
 /* Estilos */
 const Nav = styled.div`
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin: -1.3rem;
   margin-bottom: 1rem;
   background-color: #b40d3f;
@@ -34,6 +34,10 @@ const Heading = styled.div`
   grid-template-columns: 80% 20%;
 `;
 
+const P = styled.p`
+  color: #fff;
+`;
+
 const Header = () => {
   const router = useRouter();
   // Querty Apollo
@@ -48,7 +52,7 @@ const Header = () => {
     localStorage.removeItem("token");
     client.clearStore();
     router.push("/login");
-    return <p>Cargando...</p>;
+    return <P>Cargando...</P>;
   };
 
   return (
