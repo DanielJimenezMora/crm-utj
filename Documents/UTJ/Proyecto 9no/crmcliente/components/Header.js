@@ -1,8 +1,19 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { useQuery, gql } from "@apollo/client";
-import Image from "next/image";
 import { useRouter } from "next/router";
+import styled from "@emotion/styled";
+import Image from "next/image";
+
+/* GraphQL */
+const OBTENER_USUARIO = gql`
+  query obtenerUsuario {
+    obtenerUsuario {
+      id
+      nombre
+      apellido
+    }
+  }
+`;
 
 /* Estilos */
 const Nav = styled.div`
@@ -23,28 +34,13 @@ const Heading = styled.div`
   grid-template-columns: 80% 20%;
 `;
 
-/* GraphQL */
-const OBTENER_USUARIO = gql`
-  query obtenerUsuario {
-    obtenerUsuario {
-      id
-      nombre
-      apellido
-    }
-  }
-`;
-
 const Header = () => {
-  /* Ruteo */
   const router = useRouter();
-
-  // Query Apollo
+  // Querty Apollo
   const { data, loading, client } = useQuery(OBTENER_USUARIO);
 
   // Proteger que no se acceda a data antes de obtener resultados
-  if (loading) console.log("Cargando...");
-
-  // Si no hay información
+  if (loading) return null;
 
   const { nombre, apellido } = data.obtenerUsuario;
 
@@ -52,6 +48,7 @@ const Header = () => {
     localStorage.removeItem("token");
     client.clearStore();
     router.push("/login");
+    return <p>Cargando...</p>;
   };
 
   return (
@@ -63,7 +60,7 @@ const Header = () => {
 
         <Heading>
           <button onClick={() => cerrarSesion()} type="button">
-            Cerrar sesión{" "}
+            Cerrar sesión
           </button>
           <Img>
             <Image width={26} height={20} src="/img/icon/sign.png" />

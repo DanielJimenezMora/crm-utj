@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
-import styled from "@emotion/styled";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
 import { useRouter } from "next/router";
 
 const Layout = ({ children }) => {
@@ -31,7 +31,8 @@ const Layout = ({ children }) => {
         <div className="bg-gray-50 min-h-screen">
           <div className="flex min-h-screen">
             <Sidebar />
-            <main className="sm:w-2/4 xl:w:-4/5 sm:min-h-screen p-5">
+            <main className="sm:w-3/4 xl:w:-4/5 sm:min-h-screen p-5">
+              <Header />
               {children}
             </main>
           </div>

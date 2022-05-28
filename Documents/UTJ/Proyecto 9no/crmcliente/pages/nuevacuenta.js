@@ -19,7 +19,7 @@ const Bgb = styled.div`
 const LoginContainer = styled.div`
   height: 34.3em;
   width: 60em;
-  margin: 3em auto;
+  margin: 7em auto;
   display: flex;
   justify-content: space-between;
   overflow: hidden;

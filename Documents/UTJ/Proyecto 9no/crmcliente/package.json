@@ -13,6 +13,7 @@
     "@emotion/css": "^11.9.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "apollo-link-context": "^1.0.20",
     "cors": "^2.8.5",
     "cross-fetch": "^3.1.5",
     "formik": "^2.1.7",

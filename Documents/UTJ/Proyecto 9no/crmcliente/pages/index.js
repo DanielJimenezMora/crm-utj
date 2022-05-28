@@ -1,10 +1,10 @@
-import Head from "next/head";
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 const OBTENER_CLIENTES_USUARIO = gql`
-  query obtenerClientesVendedor {
+  query ObtenerClientesVendedor {
     obtenerClientesVendedor {
       id
       nombre
@@ -13,18 +13,24 @@ const OBTENER_CLIENTES_USUARIO = gql`
       direccion
       nombreNegocio
       email
+      vendedor
     }
   }
 `;
 
 export default function Index() {
-  // Consulta de apollo
-  const { data, loading, error } = useQuery(OBTENER_CLIENTES_USUARIO);
-  console.log(data);
-  console.log(loading);
-  console.log(error);
+  const router = new useRouter();
 
-  if (loading) return "Cargando...";
+  // Consulta de apollo
+  const { data, loading, client } = useQuery(OBTENER_CLIENTES_USUARIO);
+
+  if (loading) return "Cargando....";
+
+  if (!data.obtenerClientesVendedor) {
+    client.clearStore();
+    router.push("/login");
+    return <p>Cargando...</p>;
+  }
 
   return (
     <div>
@@ -32,7 +38,7 @@ export default function Index() {
         <h1 className="text-2xl text-gray-800 font-light">Clientes</h1>
 
         <table className="table-auto shadow-md mt-10 w-full w-lg">
-          <thead className="bg-zinc-800">
+          <thead className="bg-stone-800">
             <tr className="text-white">
               <th className="w-1/5 py-2">Nombre</th>
               <th className="w-1/5 py-2">Negocio</th>
@@ -40,14 +46,18 @@ export default function Index() {
               <th className="w-1/5 py-2">Dirección</th>
             </tr>
           </thead>
-          <tablebody className="bg-white">
-            <tr>
-              <td className="border px-4 py-2"></td>
-              <td className="border px-4 py-2"></td>
-              <td className="border px-4 py-2"></td>
-              <td className="border px-4 py-2"></td>
-            </tr>
-          </tablebody>
+          <tbody className="bg-white">
+            {data.obtenerClientesVendedor.map((cliente) => (
+              <tr key={cliente.id}>
+                <td className="border px-4 py-2">
+                  {cliente.nombre} {cliente.apellido}
+                </td>
+                <td className="border px-4 py-2">{cliente.nombreNegocio}</td>
+                <td className="border px-4 py-2">{cliente.telefono}</td>
+                <td className="border px-4 py-2">{cliente.direccion}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </Layout>
     </div>
