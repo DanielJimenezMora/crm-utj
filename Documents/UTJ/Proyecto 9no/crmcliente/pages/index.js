@@ -56,6 +56,7 @@ export default function Index() {
               <th className="w-1/5 py-2">Negocio</th>
               <th className="w-1/5 py-2">Telefono</th>
               <th className="w-1/5 py-2">Dirección</th>
+              <th className="w-1/5 py-2">Correo</th>
             </tr>
           </thead>
           <tbody className="bg-white">
@@ -67,6 +68,7 @@ export default function Index() {
                 <td className="border px-4 py-2">{cliente.nombreNegocio}</td>
                 <td className="border px-4 py-2">{cliente.telefono}</td>
                 <td className="border px-4 py-2">{cliente.direccion}</td>
+                <td className="border px-4 py-2">{cliente.email}</td>
               </tr>
             ))}
           </tbody>

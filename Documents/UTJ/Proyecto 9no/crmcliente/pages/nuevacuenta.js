@@ -93,6 +93,23 @@ const Input = styled.input`
   }
 `;
 
+/* Estilo de select */
+const Select = styled.select`
+  width: 90%;
+  height: 3.125rem;
+  background-color: #fff;
+  font-size: 1em;
+  padding-left: 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  &:hover {
+    border: 2px solid #108598;
+  }
+`;
+
 /* Estilo para que no se muestre un label */
 const Label = styled.label`
   display: none;
@@ -141,6 +158,7 @@ const NUEVA_CUENTA = gql`
       id
       nombre
       apellido
+      genero
       email
     }
   }
@@ -162,11 +180,13 @@ const NuevaCuenta = () => {
       nombre: "",
       apellido: "",
       email: "",
+      genero: "",
       password: "",
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required("El nombre es obligatoro"),
       apellido: Yup.string().required("El apellido es obligatorio"),
+      genero: Yup.string().required("El genero es obligatorio"),
       email: Yup.string()
         .email("El email no es válido")
         .required("El email es obligatorio"),
@@ -175,13 +195,14 @@ const NuevaCuenta = () => {
         .min(6, "La contraseña debe tener al menos 6 caracteres"),
     }),
     onSubmit: async (valores) => {
-      const { nombre, apellido, email, password } = valores;
+      const { nombre, apellido, genero, email, password } = valores;
       try {
         const { data } = await nuevoUsuario({
           variables: {
             input: {
               nombre,
               apellido,
+              genero,
               email,
               password,
             },
@@ -265,6 +286,27 @@ const NuevaCuenta = () => {
                   </p>
                 </Error>
               ) : null}
+
+              {/* Campo Genero */}
+              <Select
+                className="focus:outline-none focus:shadow-outline"
+                name="genero"
+                value={formik.values.genero}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" label="Selecciona un genero">
+                  Selecciona un genero{" "}
+                </option>
+                <option value="Hombre" label="Hombre">
+                  {" "}
+                  Hombre
+                </option>
+                <option value="Mujer" label="Mujer">
+                  Mujer
+                </option>
+              </Select>
+
               {/* Campo Email */}
               <Label htmlFor="nombre">Correo</Label>
               <Input
