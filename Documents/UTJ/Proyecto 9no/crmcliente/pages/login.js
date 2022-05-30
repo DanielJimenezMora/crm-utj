@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 
@@ -189,9 +190,11 @@ const Login = () => {
         <p>{mensaje}</p>
       </Error2>
     ) : (
-      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
-        <p>{mensaje}</p>
-      </Error2>
+      <div>
+        <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
+          <p>{mensaje}</p>
+        </Error2>
+      </div>
     );
   };
 

@@ -17,6 +17,7 @@ const OBTENER_USUARIO = gql`
 `;
 
 /* Styled Components */
+
 const Heading = styled.div`
   display: grid;
   grid-template-columns: 30% 70%;
