@@ -190,11 +190,9 @@ const Login = () => {
         <p>{mensaje}</p>
       </Error2>
     ) : (
-      <div>
-        <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
-          <p>{mensaje}</p>
-        </Error2>
-      </div>
+      <Error2 className="py-2 px-3 w-full my-3 max-w-sm text-center mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
+        <p>{mensaje}</p>
+      </Error2>
     );
   };
 

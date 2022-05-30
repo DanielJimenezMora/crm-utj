@@ -3,6 +3,7 @@ import { useQuery, gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 /* GraphQL */
 const OBTENER_USUARIO = gql`
@@ -55,6 +56,26 @@ const Header = () => {
     return <P>Cargando...</P>;
   };
 
+  const confirmar = () => {
+    Swal.fire({
+      title: "Cerrar sesión",
+      icon: "question",
+      iconHtml: "?",
+      confirmButtonText: "Cerrar sesión",
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      showCloseButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          cerrarSesion();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
   return (
     <>
       <Nav className="flex justify-between">
@@ -63,7 +84,7 @@ const Header = () => {
         </p>
 
         <Heading>
-          <button onClick={() => cerrarSesion()} type="button">
+          <button onClick={() => confirmar()} type="button">
             Cerrar sesión
           </button>
           <Img>
