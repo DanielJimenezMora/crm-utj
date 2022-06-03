@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
+import Swal from "sweetalert2";
 
 /* Estilos */
 /* Estilo para el background */
@@ -212,15 +213,16 @@ const NuevaCuenta = () => {
         guardarMensaje("Se creó correctamente el Usuario");
         setTimeout(() => {
           guardarMensaje(null);
+          confirmar();
           router.push("/login");
-        }, 3000);
+        }, 1500);
 
         //Redirigir al usuario para iniciar sesión
       } catch (error) {
         guardarMensaje(error.message.replace("GraphQL error: ", ""));
         setTimeout(() => {
           guardarMensaje(null);
-        }, 3000);
+        }, 1500);
       }
     },
   });
@@ -235,6 +237,10 @@ const NuevaCuenta = () => {
         <p>{mensaje}</p>
       </Error2>
     );
+  };
+
+  const confirmar = () => {
+    Swal.fire("!Usuario creado exitosamente!", "", "success");
   };
 
   return (

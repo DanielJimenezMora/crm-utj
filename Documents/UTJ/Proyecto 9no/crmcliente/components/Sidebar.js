@@ -67,7 +67,7 @@ const Sidebar = () => {
   const { nombre, apellido, genero } = data.obtenerUsuario;
 
   return (
-    <aside className="bg-cyan-800 sm:w-1/4 xl:w:-1/5 sm:min-h-screen p-5">
+    <aside className="bg-gray-800 sm:w-1/4 xl:w:-1/5 sm:min-h-screen p-5">
       {/* Heading sidebar */}
       <Heading>
         {/* Logo */}
@@ -101,7 +101,7 @@ const Sidebar = () => {
           </ItemImg>
         </Usuario>
 
-        <li className={router.pathname === "/" ? "bg-cyan-900 p-3" : "p-3"}>
+        <li className={router.pathname === "/" ? "bg-gray-900 p-3" : "p-3"}>
           <Link href="/">
             <Item>
               <div>
@@ -112,7 +112,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li
-          className={router.pathname === "/pedidos" ? "bg-cyan-900 p-3" : "p-3"}
+          className={router.pathname === "/pedidos" ? "bg-gray-900 p-3" : "p-3"}
         >
           <Link href="/pedidos">
             <Item>
@@ -125,7 +125,7 @@ const Sidebar = () => {
         </li>
         <li
           className={
-            router.pathname === "/productos" ? "bg-cyan-900 p-3" : "p-3"
+            router.pathname === "/productos" ? "bg-gray-900 p-3" : "p-3"
           }
         >
           <Link href="/productos">

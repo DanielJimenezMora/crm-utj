@@ -18,7 +18,7 @@ const OBTENER_USUARIO = gql`
 
 /* Estilos */
 const Nav = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   margin: -1.3rem;
   margin-bottom: 1rem;
   background-color: #b40d3f;

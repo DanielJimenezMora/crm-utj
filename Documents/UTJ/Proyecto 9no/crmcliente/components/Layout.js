@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
         />
-        <meta name="theme-color" content="rgb(22 78 99)" />
+        <meta name="theme-color" content="rgb(15 23 42)" />
         <script src="https://cdn.tailwindcss.com"></script>
       </Head>
 
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
           <div>{children}</div>
         </div>
       ) : (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="bg-neutral-100 min-h-screen">
           <div className="flex min-h-screen">
             <Sidebar />
             <main className="sm:w-3/4 xl:w:-4/5 sm:min-h-screen p-5">

@@ -60,7 +60,7 @@ export default function Index() {
               <th className="w-1/5 py-2">Telefono</th>
               <th className="w-1/5 py-2">Dirección</th>
               <th className="w-1/5 py-2">Correo</th>
-              <th className="w-1/5 py-2">Eliminar</th>
+              <th className="w-1/5 py-2">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-white">

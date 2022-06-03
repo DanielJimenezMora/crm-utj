@@ -142,7 +142,7 @@ const NuevoCliente = () => {
   };
 
   const confirmar = () => {
-    Swal.fire("¿Cliente creado exitosamente!", "", "success");
+    Swal.fire("¡Cliente creado exitosamente!", "", "success");
   };
 
   return (
