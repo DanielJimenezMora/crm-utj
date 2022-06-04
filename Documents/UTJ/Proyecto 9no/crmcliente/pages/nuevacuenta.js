@@ -100,7 +100,6 @@ const Select = styled.select`
   height: 3.125rem;
   background-color: #fff;
   font-size: 1em;
-  padding-left: 15px;
   border: none;
   border-radius: 5px;
   font-weight: 300;
@@ -295,7 +294,7 @@ const NuevaCuenta = () => {
 
               {/* Campo Genero */}
               <Select
-                className="focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="genero"
                 value={formik.values.genero}
                 onChange={formik.handleChange}
