@@ -3,6 +3,7 @@ import Head from "next/head";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { useRouter } from "next/router";
+import Search from "./Search";
 
 const Layout = ({ children }) => {
   // Hook de Routing
@@ -24,7 +25,7 @@ const Layout = ({ children }) => {
       </Head>
 
       {router.pathname === "/login" || router.pathname === "/nuevacuenta" ? (
-        <div className="">
+        <div>
           <div>{children}</div>
         </div>
       ) : (
@@ -33,6 +34,7 @@ const Layout = ({ children }) => {
             <Sidebar />
             <main className="sm:w-3/4 xl:w:-4/5 sm:min-h-screen p-5">
               <Header />
+              {/* <Search /> */}
               {children}
             </main>
           </div>
