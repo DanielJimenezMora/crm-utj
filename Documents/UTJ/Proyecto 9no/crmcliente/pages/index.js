@@ -55,7 +55,6 @@ export default function Index() {
     setClientes(data.obtenerClientesVendedor);
   };
 
-  /* showData(); */
   const searcher = ({ target }) => {
     setSearch(target.value);
     console.log(target.value);
@@ -92,7 +91,7 @@ export default function Index() {
 
   useEffect(() => {
     showData();
-  }, []);
+  });
 
   if (loading) return <P>Cargando...</P>;
 
@@ -119,7 +118,7 @@ export default function Index() {
           value={selects}
           onChange={({ target }) => setSelects(target.value)}
         >
-          <option value="Filtrar" label="Filtrar búsqueda por:">
+          <option value="Filtrar" label="Seleccione filtro de búsqueda:">
             Filtrar
           </option>
           <option value="Nombre" label="Buscar por Nombre">

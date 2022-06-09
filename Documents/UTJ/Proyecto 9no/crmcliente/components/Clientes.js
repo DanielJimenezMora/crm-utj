@@ -1,3 +1,4 @@
+import React from "react";
 import Swal from "sweetalert2";
 import { gql, useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
@@ -52,7 +53,6 @@ const Cliente = ({ cliente }) => {
       });
     },
   });
-
   const { nombre, apellido, nombreNegocio, telefono, direccion, email, id } =
     cliente;
 
@@ -93,7 +93,6 @@ const Cliente = ({ cliente }) => {
     });
   };
 
-  //console.log("datos cliente: ", cliente);
   return (
     <tr>
       <td className="border px-4 py-2">
