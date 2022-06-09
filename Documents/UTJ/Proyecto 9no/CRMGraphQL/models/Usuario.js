@@ -11,6 +11,11 @@ const UsuariosSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
+  genero: {
+    type: "string",
+    required: true,
+    trim: true,
+  },
   email: {
     type: "string",
     required: true,

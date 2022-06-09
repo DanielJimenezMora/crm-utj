@@ -6,6 +6,7 @@ const typeDefs = gql`
     id: ID
     nombre: String
     apellido: String
+    genero: String
     email: String
     creado: String
   }
@@ -49,6 +50,8 @@ const typeDefs = gql`
   type PedidoGrupo {
     id: ID
     cantidad: Int
+    nombre: String
+    precio: Float
   }
 
   type TopCliente {
@@ -64,6 +67,7 @@ const typeDefs = gql`
   input UsuarioInput {
     nombre: String!
     apellido: String!
+    genero: String!
     email: String!
     password: String!
   }
@@ -84,9 +88,9 @@ const typeDefs = gql`
 
   input ClienteInput {
     nombre: String!
-    apellido: String!
+    apellido: String
     telefono: String!
-    direccion: String!
+    direccion: String
     nombreNegocio: String
     email: String
   }
@@ -94,6 +98,8 @@ const typeDefs = gql`
   input PedidoProductoInput {
     id: ID
     cantidad: Int
+    nombre: String
+    precio: Float
   }
 
   input PedidoInput {

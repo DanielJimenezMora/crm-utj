@@ -26,7 +26,7 @@ const ProductosSchema = mongoose.Schema({
     trim: true,
   },
   tipoProducto: {
-    type: String,
+    type: "string",
     required: true,
     trim: true,
   },

@@ -8,7 +8,6 @@ const ClientesSchema = mongoose.Schema({
   },
   apellido: {
     type: "string",
-    required: true,
     trim: true,
   },
   telefono: {
@@ -21,7 +20,6 @@ const ClientesSchema = mongoose.Schema({
     type: "string",
     trim: true,
     required: true,
-    unique: true,
   },
   nombreNegocio: {
     type: "string",
@@ -31,7 +29,6 @@ const ClientesSchema = mongoose.Schema({
   email: {
     type: "string",
     trim: true,
-    unique: true,
   },
   creado: {
     type: Date,
