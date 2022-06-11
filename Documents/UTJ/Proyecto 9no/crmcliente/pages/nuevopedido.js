@@ -20,6 +20,32 @@ const NUEVO_PEDIDO = gql`
   }
 `;
 
+const OBTENER_PEDIDOS = gql`
+  query obtenerPedidosVendedor {
+    obtenerPedidosVendedor {
+      id
+      pedido {
+        id
+        cantidad
+        nombre
+      }
+
+      cliente {
+        id
+        nombre
+        apellido
+        telefono
+        direccion
+        nombreNegocio
+        email
+      }
+      vendedor
+      total
+      estado
+    }
+  }
+`;
+
 const Nuevopedido = () => {
   const router = useRouter();
 
@@ -30,7 +56,20 @@ const Nuevopedido = () => {
   const { cliente, productos, total } = pedidoContext;
 
   // Mutations para nuevo pedido
-  const [nuevoPedido] = useMutation(NUEVO_PEDIDO);
+  const [nuevoPedido] = useMutation(NUEVO_PEDIDO, {
+    update(cache, { data: { nuevoPedido } }) {
+      // Obtener el objeto de cache que deseamos actualizar
+      const { obtenerPedidosVendedor } = cache.readQuery({
+        query: OBTENER_PEDIDOS,
+      });
+      cache.writeQuery({
+        query: OBTENER_PEDIDOS,
+        data: {
+          obtenerPedidosVendedor: [...obtenerPedidosVendedor, nuevoPedido],
+        },
+      });
+    },
+  });
 
   const validarPedido = () => {
     return !productos.every((producto) => producto.cantidad > 0) ||
