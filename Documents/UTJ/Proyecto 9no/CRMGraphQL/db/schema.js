@@ -34,6 +34,7 @@ const typeDefs = gql`
     direccion: String
     nombreNegocio: String
     email: String
+    genero: String
     vendedor: ID
   }
 
@@ -93,6 +94,7 @@ const typeDefs = gql`
     direccion: String
     nombreNegocio: String
     email: String
+    genero: String!
   }
 
   input PedidoProductoInput {

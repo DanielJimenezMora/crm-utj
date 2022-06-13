@@ -30,6 +30,11 @@ const ClientesSchema = mongoose.Schema({
     type: "string",
     trim: true,
   },
+  genero: {
+    type: "string",
+    required: true,
+    trim: true,
+  },
   creado: {
     type: Date,
     default: Date.now(),
