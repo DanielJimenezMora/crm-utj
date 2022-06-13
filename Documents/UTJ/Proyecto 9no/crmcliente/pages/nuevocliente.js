@@ -28,6 +28,18 @@ const Obligatorio = styled.span`
   color: red;
   font-weight: bold;
 `;
+
+const Select = styled.select`
+  width: 100%;
+  height: 2rem;
+  background-color: #fff;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+`;
 /* Fin estilos */
 
 /* GraphQL */
@@ -41,6 +53,7 @@ const NUEVO_CLIENTE = gql`
       direccion
       nombreNegocio
       email
+      genero
     }
   }
 `;
@@ -56,6 +69,7 @@ const OBTENER_CLIENTES_USUARIO = gql`
       nombreNegocio
       email
       vendedor
+      genero
     }
   }
 `;
@@ -91,6 +105,7 @@ const NuevoCliente = () => {
       direccion: "",
       nombreNegocio: "",
       email: "",
+      genero: "",
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required("El nombre del cliente es obligatorio"),
@@ -103,10 +118,18 @@ const NuevoCliente = () => {
         "El nombre del negocio es obligatorio"
       ),
       email: Yup.string().required("El email del cliente es obligatorio"),
+      genero: Yup.string().required("El genero del cliente es obligatorio"),
     }),
     onSubmit: async (valores) => {
-      const { nombre, apellido, telefono, direccion, nombreNegocio, email } =
-        valores;
+      const {
+        nombre,
+        apellido,
+        telefono,
+        direccion,
+        nombreNegocio,
+        email,
+        genero,
+      } = valores;
 
       try {
         const { data } = await nuevoCliente({
@@ -118,6 +141,7 @@ const NuevoCliente = () => {
               direccion,
               nombreNegocio,
               email,
+              genero,
             },
           },
         });
@@ -204,6 +228,29 @@ const NuevoCliente = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.apellido}
               />
+            </div>
+
+            <div className="mb-4">
+              <Obligatorio>*</Obligatorio> Género
+              <Select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="genero"
+                value={formik.values.genero}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="" label="Selecciona un género">
+                  Selecciona un género{" "}
+                </option>
+                <option value="Hombre" label="Hombre">
+                  {" "}
+                  Hombre
+                </option>
+                <option value="Mujer" label="Mujer">
+                  {" "}
+                  Mujer
+                </option>
+              </Select>
             </div>
 
             <div className="mb-4">

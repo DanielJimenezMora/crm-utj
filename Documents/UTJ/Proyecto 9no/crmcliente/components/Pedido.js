@@ -216,9 +216,21 @@ const Pedido = ({ pedido }) => {
         {pedido.pedido.map((articulo) => (
           <div key={articulo.id} className="mt-4">
             <p className="text-sm text-gray-600">Producto: {articulo.nombre}</p>
-            <p className="text-sm text-gray-600">
-              Cantidad: {articulo.cantidad}
-            </p>
+            {
+              <p className="text-sm text-gray-600">
+                Precio: ${articulo.precio}
+              </p>
+            }
+            {
+              <p className="text-sm text-gray-600">
+                Cantidad: {articulo.cantidad}
+              </p>
+            }
+            {
+              <p className="text-sm text-gray-600">
+                Subtotal: {articulo.precio * articulo.cantidad}
+              </p>
+            }
           </div>
         ))}
 

@@ -39,6 +39,11 @@ const Select = styled.select`
   padding-bottom: 1rem;
 `;
 
+const ContainerTab = styled.div`
+  height: 60vh;
+  border-radius: 10px !important;
+`;
+
 export default function Productos() {
   const router = new useRouter();
   const { data, loading, client } = useQuery(OBTENER_PRODUCTOS);
@@ -109,7 +114,7 @@ export default function Productos() {
         <hr />
 
         <Link href="/nuevoproducto">
-          <a class="bg-cyan-800 py-2 px-5 mt-3 inline-block text-white hover:bg-cyan-900  mb-3 rounded font-bold text-sm">
+          <a class="bg-cyan-800 py-2 px-5 mt-3 inline-block text-white hover:bg-cyan-900  mb-3 rounded font-bold text-sm w-full lg:w-auto text-center">
             Nuevo producto
           </a>
         </Link>
@@ -152,24 +157,26 @@ export default function Productos() {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
 
-        <table className="table-auto shadow-md mt-10 w-full w-lg">
-          <thead className="bg-stone-800">
-            <tr className="text-white">
-              <th className="w-1/5 py-2">Nombre</th>
-              <th className="w-1/5 py-2">Presentación</th>
-              <th className="w-1/5 py-2">Precio</th>
-              <th className="w-1/5 py-2">Existencia</th>
-              <th className="w-1/5 py-2">Existencia Deseada</th>
-              <th className="w-1/5 py-2">Categoría</th>
-              <th className="w-1/5 py-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white">
-            {resultados.map((producto) => (
-              <Producto key={producto.id} producto={producto} />
-            ))}
-          </tbody>
-        </table>
+        <ContainerTab className="overflow-x-scroll mt-5">
+          <table className="table-auto shadow-md w-full w-lg">
+            <thead className="bg-stone-800">
+              <tr className="text-white">
+                <th className="w-1/5 py-2">Nombre</th>
+                <th className="w-1/5 py-2">Presentación</th>
+                <th className="w-1/5 py-2">Precio</th>
+                <th className="w-1/5 py-2">Existencia</th>
+                <th className="w-1/5 py-2">Existencia Deseada</th>
+                <th className="w-1/5 py-2">Categoría</th>
+                <th className="w-1/5 py-2">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {resultados.map((producto) => (
+                <Producto key={producto.id} producto={producto} />
+              ))}
+            </tbody>
+          </table>
+        </ContainerTab>
       </Layout>
     </div>
   );

@@ -20,6 +20,7 @@ const OBTENER_CLIENTE = gql`
       direccion
       nombreNegocio
       email
+      genero
     }
   }
 `;
@@ -34,6 +35,7 @@ const ACTUALIZAR_CLIENTE = gql`
       direccion
       nombreNegocio
       email
+      genero
     }
   }
 `;
@@ -52,6 +54,18 @@ const Error = styled.div`
   width: 100%;
   text-align: left;
   padding: 8px;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  height: 2rem;
+  background-color: #fff;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  box-sizing: border-box;
 `;
 
 const EditarCliente = () => {
@@ -81,6 +95,7 @@ const EditarCliente = () => {
       "El nombre del negocio es obligatorio"
     ),
     email: Yup.string().required("El email del cliente es obligatorio"),
+    genero: Yup.string().required("El genero del cliente es obligatorio"),
   });
 
   if (loading) return <p>Cargando...</p>;
@@ -101,8 +116,15 @@ const EditarCliente = () => {
 
   // Modificar el cliente en la base de datos
   const actualizarInfoCliente = async (valores) => {
-    const { nombre, apellido, telefono, direccion, nombreNegocio, email } =
-      valores;
+    const {
+      nombre,
+      apellido,
+      telefono,
+      direccion,
+      nombreNegocio,
+      email,
+      genero,
+    } = valores;
     try {
       const { data } = await actualizarCliente({
         variables: {
@@ -114,6 +136,7 @@ const EditarCliente = () => {
             direccion,
             nombreNegocio,
             email,
+            genero,
           },
         },
       });
@@ -199,6 +222,45 @@ const EditarCliente = () => {
                       onBlur={props.handleBlur}
                       value={props.values.apellido}
                     />
+                  </div>
+
+                  <div className="mb-4">
+                    {/* genero */}
+                    <label
+                      className="block text-gray-700 text-sm font-bold mb-2"
+                      htmlFor="tipoProducto"
+                    >
+                      <Obligatorio>*</Obligatorio> Género
+                      {props.touched.genero && props.errors.genero ? (
+                        <Error className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                          <p>
+                            <span className="font-bold">Error: </span>
+                            {props.errors.genero}
+                          </p>
+                        </Error>
+                      ) : null}
+                    </label>
+
+                    <Select
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      name="genero"
+                      value={props.values.genero}
+                      onChange={props.handleChange}
+                      onBlur={props.handleBlur}
+                    >
+                      <option value="" label="Selecciona un género">
+                        Selecciona un género{" "}
+                      </option>
+                      <option value="Hombre" label="Hombre">
+                        {" "}
+                        Hombre
+                      </option>
+                      <option value="Mujer" label="Mujer">
+                        {" "}
+                        Mujer
+                      </option>
+                    </Select>
+                    {/* Fin de Tipo de genero */}
                   </div>
 
                   <div className="mb-4">

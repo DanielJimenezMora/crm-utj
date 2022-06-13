@@ -7,6 +7,7 @@ import Total from "../components/pedidos/Total";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import styled from "@emotion/styled";
 
 // Context de pedidos
 import PedidoContext from "../context/pedidos/PedidoContext";
@@ -44,6 +45,14 @@ const OBTENER_PEDIDOS = gql`
       estado
     }
   }
+`;
+
+/* Estilos */
+const Container = styled.div`
+  padding-left: 3rem;
+  width: 100%;
+  height: 80vh;
+  padding-bottom: 3rem;
 `;
 
 const Nuevopedido = () => {
@@ -135,19 +144,21 @@ const Nuevopedido = () => {
       <h1 className="text-2xl text-gray-800 font-light">Nuevo Pedido</h1>
       <br />
       <hr />
-      {mensaje && mostrarMensaje()}
-      <AsignarCliente />
-      <AsignarProductos />
-      <ResumenPedido />
-      <Total />
+      <Container className="overflow-x-scroll">
+        <AsignarCliente />
+        <AsignarProductos />
+        <ResumenPedido />
+        <Total />
+        {mensaje && mostrarMensaje()}
 
-      <button
-        type="button"
-        className={` bg-cyan-800 w-4/5 rounded mt-5 p-3 text-white font-bold hover:bg-cyan-900 ${validarPedido()} `}
-        onClick={() => crearNuevoPedido()}
-      >
-        Registrar pedido
-      </button>
+        <button
+          type="button"
+          className={` bg-cyan-800 w-4/5 rounded mt-5 p-3 text-white font-bold hover:bg-cyan-900 ${validarPedido()} `}
+          onClick={() => crearNuevoPedido()}
+        >
+          Registrar pedido
+        </button>
+      </Container>
     </Layout>
   );
 };
