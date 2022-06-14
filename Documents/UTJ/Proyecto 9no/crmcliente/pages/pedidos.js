@@ -56,9 +56,11 @@ export default function Pedidos() {
           {obtenerPedidosVendedor.length === 0 ? (
             <p className="text-center text-2xl">No hay pedidos</p>
           ) : (
-            obtenerPedidosVendedor.map((pedido) => (
-              <Pedido key={pedido.id} pedido={pedido} />
-            ))
+            obtenerPedidosVendedor.map((pedido) =>
+              obtenerPedidosVendedor.cliente ? (
+                <Pedido key={pedido.id} pedido={pedido} />
+              ) : null
+            )
           )}
         </ContainerPed>
       </Layout>
